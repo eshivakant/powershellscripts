@@ -1,0 +1,17 @@
+# Import the IISAdministration module
+Import-Module IISAdministration
+
+# Replace 'YourWebsiteName' with the name of your website
+$websiteName = "YourWebsiteName"
+
+# Get the site
+$site = Get-IISSite -Name $websiteName
+
+# Get the Windows Authentication configuration for the site
+$windowsAuth = $site | Get-IISConfigSection -SectionPath "system.webServer/security/authentication/windowsAuthentication" -OverrideMode Inherit
+
+# Set ExtendedProtection to Off
+$windowsAuth.SetAttributeValue("extendedProtectionTokenChecking", "None")
+$windowsAuth.CommitChanges()
+
+Write-Host "Extended Protection for Windows Authentication is set to Off for website: $websiteName"
